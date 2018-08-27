@@ -1,0 +1,191 @@
+<div class="breadcrumbs" id="breadcrumbs">
+  <ul class="breadcrumb">
+    <li>
+      <i class="icon-home home-icon"></i>
+      <a href="/index">主页</a>
+    </li>
+    <li>
+      <a href="#">业务信息</a>
+    </li>
+    <li class="active">购物车</li>
+  </ul>
+</div>
+
+<div class="page-content">
+  <div class="page-header">
+    <h1>
+      业务信息
+      <small>
+        <i class="icon-double-angle-right"></i>
+        购物车
+      </small>
+    </h1>
+  </div><!-- /.page-header -->
+
+  <div class="row" id="app">
+    <div class="col-xs-12">
+      <button type="button" class="btn btn-primary" @click="onShow()" data-toggle="modal">
+        查询
+      </button>
+      <div class="space-6"></div>
+      <div class="table-header">
+        找到{{totalCount}}条数据
+      </div>
+      <div class="table-responsive">
+        <table id="data-list" class="table table-striped table-bordered table-hover no-margin-bottom">
+          <thead>
+          <tr>
+            <th class="center">
+              购物车编号
+            </th>
+            <th>客户编号</th>
+            <th>商品编码</th>
+            <th>商品图片</th>
+            <th>商品描述</th>
+            <th>颜色</th>
+            <th>尺码</th>
+            <th>单价(RMB)</th>
+            <th>单价(USD)</th>
+            <th>欲购买数量</th>
+            <th>总价(RMB)</th>
+            <th>总价(USD)</th>
+            <th>状态</th>
+            <th class="hidden-480">添加</th>
+            <th>
+              <i class="icon-time bigger-110 hidden-480"></i>
+              添加时间
+            </th>
+            <th class="hidden-480">更新</th>
+            <th>
+              <i class="icon-time bigger-110 hidden-480"></i>
+              更新时间
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          {{#each dataList}}
+            <tr>
+              <td class="center">{{this.shoppingCartID}}</td>
+              <td>{{this.customerID}}</td>
+              <td>
+                <input type="hidden" value="{{this.itemID}}">
+                {{this.itemVO.itemCode}}
+              </td>
+              <td>
+                <img src="{{this.itemVO.itemImageUrl}}" style="width: 60px">
+              </td>
+              <td>{{this.itemVO.itemShortDescriptionCN}}</td>
+              <td>{{this.itemVO.colorCN}}</td>
+              <td>{{this.itemVO.sizeCN}}</td>
+              <td>{{this.itemVO.unitPrice4RMB}}</td>
+              <td>{{this.itemVO.unitPrice4USD}}</td>
+              <td>{{this.shoppingCount}}</td>
+              <td>{{this.totalPrice4RMB}}</td>
+              <td>{{this.totalPrice4USD}}</td>
+              <td>{{this.statusText}}</td>
+              <td>{{this.inUser}}</td>
+              <td>{{this.inDate}}</td>
+              <td>{{this.lastEditUser}}</td>
+              <td>{{this.lastEditDate}}</td>
+            </tr>
+          {{/each}}
+          </tbody>
+        </table>
+      </div>
+
+      {{#if paginationArray}}
+        <div class="modal-footer no-margin-top">
+          <ul class="pagination pull-right no-margin">
+            <li class="prev">
+              {{#if prePageNum}}
+                <a href="/shoppingCart?page={{prePageNum}}">
+                  <i class="icon-double-angle-left"></i>
+                </a>
+              {{else}}
+                <span>
+              <i class="icon-double-angle-left"></i>
+            </span>
+              {{/if}}
+            </li>
+            {{#each paginationArray}}
+              <li>
+                <a href="/shoppingCart?page={{this}}">{{this}}</a>
+              </li>
+            {{/each}}
+            <li class="next">
+              {{#if nextPageNum}}
+                <a href="/shoppingCart?page={{nextPageNum}}">
+                  <i class="icon-double-angle-right"></i>
+                </a>
+              {{else}}
+                <span>
+              <i class="icon-double-angle-right"></i>
+            </span>
+              {{/if}}
+            </li>
+          </ul>
+        </div>
+      {{/if}}
+
+      <div class="modal fade" tabindex="-1" role="dialog" id="myModal">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">购物车查询</h4>
+            </div>
+            <div class="alert alert-danger store-alert hidden">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <span></span>
+            </div>
+            <div class="modal-body">
+              <form class="form-horizontal">
+                <div class="form-group" v-if="shoppingCartID !== ''">
+                  <label for="inputEmail3" class="col-sm-2 control-label">购物车编号</label>
+                  <div class="col-sm-10">
+                    <p class="form-control-static">\{{shoppingCartID}}</p>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputPassword3" class="col-sm-2 control-label">客户信息</label>
+                  <div class="col-sm-3 no-padding-right">
+                    <input type="text" class="form-control" maxlength="25" v-model="customerID" @blur="onCustomerIDBlur()"/>
+                  </div>
+                  <div class="col-sm-7 no-padding-left">
+                    <input type="text" class="form-control" maxlength="25" v-model="customerName" readonly="readonly"/>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">订单状态</label>
+                  <div class="col-sm-10">
+                    <select class="form-control" v-model="selectedStatus">
+                      <option value="">全部</option>
+                      <option value="I">待提交</option>
+                      <option value="S">已提交</option>
+                      <!--<option value="E">已过期</option>-->
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-sm-10 col-sm-offset-2">
+                    <div class="alert alert-warning alert-dismissible hidden" role="alert">
+                      <strong>提示!</strong>
+                      <span></span>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+              <button type="button" class="btn btn-primary" @click="onSearch()">查询</button>
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<input type="hidden" value="{{currentPageNum}}" id="hidden-currentPageNum">
+<script src="/javascripts/view/shoppingCart.js"></script>

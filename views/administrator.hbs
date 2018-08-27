@@ -1,0 +1,213 @@
+
+<div class="breadcrumbs" id="breadcrumbs">
+  <ul class="breadcrumb">
+    <li>
+      <i class="icon-home home-icon"></i>
+      <a href="/index">主页</a>
+    </li>
+    <li>
+      <a href="#">系统信息</a>
+    </li>
+    <li class="active">管理员信息管理</li>
+  </ul>
+</div>
+
+<div class="page-content">
+  <div class="page-header">
+    <h1>
+      基本信息
+      <small>
+        <i class="icon-double-angle-right"></i>
+        管理员信息维护
+      </small>
+    </h1>
+  </div><!-- /.page-header -->
+
+  <div class="row" id="app">
+    <div class="col-xs-12">
+      <div class="space-6"></div>
+      <div class="table-header">
+        找到{{totalCount}}条数据
+      </div>
+      <div class="table-responsive">
+        <table id="administrator-list" class="table table-striped table-bordered table-hover no-margin-bottom">
+          <thead>
+          <tr>
+            <th class="center">管理员编号</th>
+            <th>管理员姓名</th>
+            <th>账号</th>
+            <th>电话</th>
+            <th>邮箱</th>
+            <th>管理员权限</th>
+            <th>状态</th>
+            <th class="hidden-480">添加</th>
+            <th>
+              <i class="icon-time bigger-110 hidden-480"></i>
+              添加时间
+            </th>
+            <th class="hidden-480">更新</th>
+            <th>
+              <i class="icon-time bigger-110 hidden-480"></i>
+              更新时间
+            </th>
+            <th>操作</th>
+          </tr>
+          </thead>
+          <tbody>
+          {{#each dataList}}
+            <tr>
+              <td class="center">{{this.administratorID}}</td>
+              <td>{{this.administratorName}}</td>
+              <td>{{this.account}}</td>
+              <td>{{this.cellphone}}</td>
+              <td>{{this.email}}</td>
+              <td>
+                <input type="hidden" value="{{customerRole}}">
+                {{this.customerRoleText}}
+              </td>
+              <td>
+                <input type="hidden" value="{{status}}">
+                {{this.statusText}}
+              </td>
+              <td>{{this.inUser}}</td>
+              <td>{{this.inDate}}</td>
+              <td>{{this.lastEditUser}}</td>
+              <td>{{this.lastEditDate}}</td>
+              <td>
+                <div class="visible-md visible-lg hidden-sm hidden-xs action-buttons">
+                  <a class="green" href="#" @click="onChange({{@index}})">
+                    <i class="icon-pencil bigger-130"></i>
+                  </a>
+                  <a class="red" href="#" @click="onDelete('{{this.administratorID}}', '{{this.administratorName}}')">
+                    <i class="icon-trash bigger-130"></i>
+                  </a>
+                </div>
+              </td>
+            </tr>
+          {{/each}}
+          </tbody>
+        </table>
+      </div>
+
+      {{#if paginationArray}}
+        <div class="modal-footer no-margin-top">
+          <ul class="pagination pull-right no-margin">
+            <li class="prev">
+              {{#if prePageNum}}
+                <a href="/administrator?page={{prePageNum}}">
+                  <i class="icon-double-angle-left"></i>
+                </a>
+              {{else}}
+                <span>
+                  <i class="icon-double-angle-left"></i>
+                </span>
+              {{/if}}
+            </li>
+            {{#each paginationArray}}
+              <li>
+                <a href="/administrator?page={{this}}">{{this}}</a>
+              </li>
+            {{/each}}
+            <li class="next">
+              {{#if nextPageNum}}
+                <a href="/administrator?page={{nextPageNum}}">
+                  <i class="icon-double-angle-right"></i>
+                </a>
+              {{else}}
+                <span>
+                  <i class="icon-double-angle-right"></i>
+                </span>
+              {{/if}}
+            </li>
+          </ul>
+        </div>
+      {{/if}}
+
+      <div class="modal fade" tabindex="-1" role="dialog" id="myModal">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">管理员注册审批</h4>
+            </div>
+            <div class="alert alert-danger store-alert hidden">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <span></span>
+            </div>
+            <div class="modal-body">
+              <form class="form-horizontal">
+                <div class="form-group" v-if="administratorID !== ''">
+                  <label for="inputEmail3" class="col-sm-2 control-label">编号</label>
+                  <div class="col-sm-10">
+                    <p class="form-control-static">\{{administratorID}}</p>
+                  </div>
+                </div>
+                <div class="form-group" v-if="administratorName !== ''">
+                  <label for="inputEmail4" class="col-sm-2 control-label">姓名</label>
+                  <div class="col-sm-10">
+                    <p class="form-control-static">\{{administratorName}}</p>
+                  </div>
+                </div>
+                <div class="form-group" v-if="account !== ''">
+                  <label for="inputEmail5" class="col-sm-2 control-label">账号</label>
+                  <div class="col-sm-10">
+                    <p class="form-control-static">\{{account}}</p>
+                  </div>
+                </div>
+                <div class="form-group" v-if="cellphone !== ''">
+                  <label for="inputEmail3" class="col-sm-2 control-label">电话</label>
+                  <div class="col-sm-10">
+                    <p class="form-control-static">\{{cellphone}}</p>
+                  </div>
+                </div>
+                <div class="form-group" v-if="email !== ''">
+                  <label for="inputEmail3" class="col-sm-2 control-label">邮箱</label>
+                  <div class="col-sm-10">
+                    <p class="form-control-static">\{{email}}</p>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">权限</label>
+                  <div class="col-sm-10">
+                    <select class="form-control" v-model="selectedCustomerRole">
+                      <option value="" selected>请选择权限</option>
+                      <option v-for="customerRole in customerRoleList" :value="customerRole.key">
+                        \{{customerRole.value}}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">状态</label>
+                  <div class="col-sm-10">
+                    <select class="form-control" v-model="selectedStatus">
+                      <option value="" selected>请选择状态</option>
+                      <option v-for="status in statusList" :value="status.key">
+                        \{{status.value}}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-sm-10 col-sm-offset-2">
+                    <div class="alert alert-warning alert-dismissible hidden" role="alert">
+                      <strong>提示!</strong>
+                      <span></span>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+              <button type="button" class="btn btn-primary" :disabled="!enabledSave" @click="onSave">保存</button>
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<input type="hidden" value="{{currentPageNum}}" id="hidden-currentPageNum">
+<script src="/javascripts/view/administrator.js"></script>

@@ -1,0 +1,359 @@
+<div class="breadcrumbs" id="breadcrumbs">
+  <ul class="breadcrumb">
+    <li>
+      <i class="icon-home home-icon"></i>
+      <a href="/index">主页</a>
+    </li>
+    <li>
+      <a href="#">业务信息</a>
+    </li>
+    <li class="active">上传商品图片</li>
+  </ul>
+</div>
+
+<div class="page-content" id="app">
+  <div class="page-header">
+    <h1>
+      商品管理
+      <small>
+        <i class="icon-double-angle-right"></i>
+        上传商品图片
+      </small>
+    </h1>
+  </div>
+  <input type="hidden" value="{{optionType}}" id="hidden-optionType">
+  <input type="hidden" value="{{itemID}}" id="hidden-itemID">
+  <div class="row">
+    <div class="col-sm-4">
+      <div class="widget-box">
+        <div class="widget-header">
+          <h4>商品图1</h4>
+          <div class="widget-toolbar">
+            <a href="#" data-action="collapse">
+              <i class="icon-chevron-up"></i>
+            </a>
+          </div>
+        </div>
+        <div class="widget-body">
+          <div class="widget-main">
+            <div>
+              <label for="form-field-8">大图（800 * 800）</label>
+              <form method="post" enctype="multipart/form-data" class="text-center" v-show="optionType === 'add' || (optionType === 'upd' && image1_big_upload_show)">
+                <input type="file" name="file" class="demo-fileInput-4 image1-big" accept="image/jpeg,image/x-png" @change="onFileChange('.image1-big')">
+              </form>
+              <div v-show="optionType == 'upd' && !image1_big_upload_show">
+                <img :src="image1_big_url" :alt="image1_big_url" class="img-responsive" style="margin: 0 auto; width: 200px">
+                <button type="button" class="btn btn-primary btn-block" @click="onEdit('.image1-big')" style="margin-top: 15px">编辑</button>
+              </div>
+              <div v-show="optionType === 'upd' && image1_big_upload_show">
+                <button type="button" class="btn btn-default btn-block" @click="onCancel('.image1-big')" style="margin-top: 15px">取消</button>
+              </div>
+            </div>
+            <hr />
+            <div>
+              <label for="form-field-9">常规图（350 * 350）</label>
+              <form method="post" enctype="multipart/form-data" class="text-center" v-show="optionType === 'add' || (optionType === 'upd' && image1_normal_upload_show)">
+                <input type="file" name="file" class="demo-fileInput-4 image1-normal" accept="image/jpeg,image/x-png" @change="onFileChange('.image1-normal')">
+              </form>
+              <div v-show="optionType == 'upd' && !image1_normal_upload_show">
+                <img :src="image1_normal_url" alt="" class="img-responsive" style="margin: 0 auto; width: 150px">
+                <button type="button" class="btn btn-primary btn-block" @click="onEdit('.image1-normal')" style="margin-top: 15px">编辑</button>
+              </div>
+              <div v-show="optionType === 'upd' && image1_normal_upload_show">
+                <button type="button" class="btn btn-default btn-block" @click="onCancel('.image1-normal')" style="margin-top: 15px">取消</button>
+              </div>
+            </div>
+            <hr />
+            <div>
+              <label for="form-field-11">缩略图（55 * 55）</label>
+              <form method="post" enctype="multipart/form-data" class="text-center" v-show="optionType === 'add' || (optionType === 'upd' && image1_thumbnail_upload_show)">
+                <input type="file" name="file" class="demo-fileInput-4 image1-thumbnail" accept="image/jpeg,image/x-png" @change="onFileChange('.image1-thumbnail')">
+              </form>
+              <div v-show="optionType == 'upd' && !image1_thumbnail_upload_show">
+                <img :src="image1_thumbnail_url" alt="" class="img-responsive" style="margin: 0 auto">
+                <button type="button" class="btn btn-primary btn-block" @click="onEdit('.image1-thumbnail')" style="margin-top: 15px">编辑</button>
+              </div>
+              <div v-show="optionType === 'upd' && image1_thumbnail_upload_show">
+                <button type="button" class="btn btn-default btn-block" @click="onCancel('.image1-thumbnail')" style="margin-top: 15px">取消</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="widget-box">
+        <div class="widget-header">
+          <h4>商品图2</h4>
+          <div class="widget-toolbar">
+            <a href="#" data-action="collapse">
+              <i class="icon-chevron-up"></i>
+            </a>
+          </div>
+        </div>
+        <div class="widget-body">
+          <div class="widget-main">
+            <div>
+              <label for="form-field-8">大图（800 * 800）</label>
+              <form method="post" enctype="multipart/form-data" class="text-center" v-show="optionType === 'add' || (optionType === 'upd' && image2_big_upload_show)">
+                <input type="file" name="file" class="demo-fileInput-4 image2-big" accept="image/jpeg,image/x-png" @change="onFileChange('.image2-big')">
+              </form>
+              <div v-show="optionType == 'upd' && !image2_big_upload_show">
+                <img :src="image2_big_url" alt="" class="img-responsive" style="margin: 0 auto; width: 200px">
+                <button type="button" class="btn btn-primary btn-block" @click="onEdit('.image2-big')" style="margin-top: 15px">编辑</button>
+              </div>
+              <div v-show="optionType === 'upd' && image2_big_upload_show">
+                <button type="button" class="btn btn-default btn-block" @click="onCancel('.image2-big')" style="margin-top: 15px">取消</button>
+              </div>
+            </div>
+            <hr />
+            <div>
+              <label for="form-field-9">常规图（350 * 350）</label>
+              <form method="post" enctype="multipart/form-data" class="text-center" v-show="optionType === 'add' || (optionType === 'upd' && image2_normal_upload_show)">
+                <input type="file" name="file" class="demo-fileInput-4 image2-normal" accept="image/jpeg,image/x-png" @change="onFileChange('.image2-normal')">
+              </form>
+              <div v-show="optionType == 'upd' && !image2_normal_upload_show">
+                <img :src="image2_normal_url" alt="" class="img-responsive" style="margin: 0 auto; width: 150px">
+                <button type="button" class="btn btn-primary btn-block" @click="onEdit('.image2-normal')" style="margin-top: 15px">编辑</button>
+              </div>
+              <div v-show="optionType === 'upd' && image2_normal_upload_show">
+                <button type="button" class="btn btn-default btn-block" @click="onCancel('.image2-normal')" style="margin-top: 15px">取消</button>
+              </div>
+            </div>
+
+            <hr />
+            <div>
+              <label for="form-field-11">缩略图（55 * 55）</label>
+              <form method="post" enctype="multipart/form-data" class="text-center" v-show="optionType === 'add' || (optionType === 'upd' && image2_thumbnail_upload_show)">
+                <input type="file" name="file" class="demo-fileInput-4 image2-thumbnail" accept="image/jpeg,image/x-png" @change="onFileChange('.image2-thumbnail')">
+              </form>
+              <div v-show="optionType == 'upd' && !image2_thumbnail_upload_show">
+                <img :src="image2_thumbnail_url" alt="" class="img-responsive" style="margin: 0 auto">
+                <button type="button" class="btn btn-primary btn-block" @click="onEdit('.image2-thumbnail')" style="margin-top: 15px">编辑</button>
+              </div>
+              <div v-show="optionType === 'upd' && image2_thumbnail_upload_show">
+                <button type="button" class="btn btn-default btn-block" @click="onCancel('.image2-thumbnail')" style="margin-top: 15px">取消</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="widget-box">
+        <div class="widget-header">
+          <h4>商品图3</h4>
+          <div class="widget-toolbar">
+            <a href="#" data-action="collapse">
+              <i class="icon-chevron-up"></i>
+            </a>
+          </div>
+        </div>
+        <div class="widget-body">
+          <div class="widget-main">
+            <div>
+              <label for="form-field-8">大图（800 * 800）</label>
+              <form method="post" enctype="multipart/form-data" class="text-center" v-show="optionType === 'add' || (optionType === 'upd' && image3_big_upload_show)">
+                <input type="file" name="file" class="demo-fileInput-4 image3-big" accept="image/jpeg,image/x-png" @change="onFileChange('.image3-big')">
+              </form>
+              <div v-show="optionType == 'upd' && !image3_big_upload_show">
+                <img :src="image3_big_url" alt="" class="img-responsive" style="margin: 0 auto; width: 200px">
+                <button type="button" class="btn btn-primary btn-block" @click="onEdit('.image3-big')" style="margin-top: 15px">编辑</button>
+              </div>
+              <div v-show="optionType === 'upd' && image3_big_upload_show">
+                <button type="button" class="btn btn-default btn-block" @click="onCancel('.image3-big')" style="margin-top: 15px">取消</button>
+              </div>
+            </div>
+            <hr />
+            <div>
+              <label for="form-field-9">常规图（350 * 350）</label>
+              <form method="post" enctype="multipart/form-data" class="text-center" v-show="optionType === 'add' || (optionType === 'upd' && image3_normal_upload_show)">
+                <input type="file" name="file" class="demo-fileInput-4 image3-normal" accept="image/jpeg,image/x-png" @change="onFileChange('.image3-normal')">
+              </form>
+              <div v-show="optionType == 'upd' && !image3_normal_upload_show">
+                <img :src="image3_normal_url" alt="" class="img-responsive" style="margin: 0 auto; width: 150px">
+                <button type="button" class="btn btn-primary btn-block" @click="onEdit('.image3-normal')" style="margin-top: 15px">编辑</button>
+              </div>
+              <div v-show="optionType === 'upd' && image3_normal_upload_show">
+                <button type="button" class="btn btn-default btn-block" @click="onCancel('.image3-normal')" style="margin-top: 15px">取消</button>
+              </div>
+            </div>
+
+            <hr />
+            <div>
+              <label for="form-field-11">缩略图（55 * 55）</label>
+              <form method="post" enctype="multipart/form-data" class="text-center" v-show="optionType === 'add' || (optionType === 'upd' && image3_thumbnail_upload_show)">
+                <input type="file" name="file" class="demo-fileInput-4 image3-thumbnail" accept="image/jpeg,image/x-png" @change="onFileChange('.image3-thumbnail')">
+              </form>
+              <div v-show="optionType == 'upd' && !image3_thumbnail_upload_show">
+                <img :src="image3_thumbnail_url" alt="" class="img-responsive" style="margin: 0 auto">
+                <button type="button" class="btn btn-primary btn-block" @click="onEdit('.image3-thumbnail')" style="margin-top: 15px">编辑</button>
+              </div>
+              <div v-show="optionType === 'upd' && image3_thumbnail_upload_show">
+                <button type="button" class="btn btn-default btn-block" @click="onCancel('.image3-thumbnail')" style="margin-top: 15px">取消</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-4">
+      <div class="widget-box">
+        <div class="widget-header">
+          <h4>商品图4</h4>
+          <div class="widget-toolbar">
+            <a href="#" data-action="collapse">
+              <i class="icon-chevron-up"></i>
+            </a>
+          </div>
+        </div>
+        <div class="widget-body">
+          <div class="widget-main">
+            <div>
+              <label for="form-field-8">大图（800 * 800）</label>
+              <form method="post" enctype="multipart/form-data" class="text-center" v-show="optionType === 'add' || (optionType === 'upd' && image4_big_upload_show)">
+                <input type="file" name="file" class="demo-fileInput-4 image4-big" accept="image/jpeg,image/x-png" @change="onFileChange('.image4-big')">
+              </form>
+              <div v-show="optionType == 'upd' && !image4_big_upload_show">
+                <img :src="image4_big_url" alt="" class="img-responsive" style="margin: 0 auto; width: 200px">
+                <button type="button" class="btn btn-primary btn-block" @click="onEdit('.image4-big')" style="margin-top: 15px">编辑</button>
+              </div>
+              <div v-show="optionType === 'upd' && image4_big_upload_show">
+                <button type="button" class="btn btn-default btn-block" @click="onCancel('.image4-big')" style="margin-top: 15px">取消</button>
+              </div>
+            </div>
+            <hr />
+            <div>
+              <label for="form-field-9">常规图（350 * 350）</label>
+              <form method="post" enctype="multipart/form-data" class="text-center" v-show="optionType === 'add' || (optionType === 'upd' && image4_normal_upload_show)">
+                <input type="file" name="file" class="demo-fileInput-4 image4-normal" accept="image/jpeg,image/x-png" @change="onFileChange('.image4-normal')">
+              </form>
+              <div v-show="optionType == 'upd' && !image4_normal_upload_show">
+                <img :src="image4_normal_url" alt="" class="img-responsive" style="margin: 0 auto; width: 150px">
+                <button type="button" class="btn btn-primary btn-block" @click="onEdit('.image4-normal')" style="margin-top: 15px">编辑</button>
+              </div>
+              <div v-show="optionType === 'upd' && image4_normal_upload_show">
+                <button type="button" class="btn btn-default btn-block" @click="onCancel('.image4-normal')" style="margin-top: 15px">取消</button>
+              </div>
+            </div>
+
+            <hr />
+            <div>
+              <label for="form-field-11">缩略图（55 * 55）</label>
+              <form method="post" enctype="multipart/form-data" class="text-center" v-show="optionType === 'add' || (optionType === 'upd' && image4_thumbnail_upload_show)">
+                <input type="file" name="file" class="demo-fileInput-4 image4-thumbnail" accept="image/jpeg,image/x-png" @change="onFileChange('.image4-thumbnail')">
+              </form>
+              <div v-show="optionType == 'upd' && !image4_thumbnail_upload_show">
+                <img :src="image4_thumbnail_url" alt="" class="img-responsive" style="margin: 0 auto;">
+                <button type="button" class="btn btn-primary btn-block" @click="onEdit('.image4-thumbnail')" style="margin-top: 15px">编辑</button>
+              </div>
+              <div v-show="optionType === 'upd' && image4_thumbnail_upload_show">
+                <button type="button" class="btn btn-default btn-block" @click="onCancel('.image4-thumbnail')" style="margin-top: 15px">取消</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="widget-box">
+        <div class="widget-header">
+          <h4>商品图5</h4>
+          <div class="widget-toolbar">
+            <a href="#" data-action="collapse">
+              <i class="icon-chevron-up"></i>
+            </a>
+          </div>
+        </div>
+        <div class="widget-body">
+          <div class="widget-main">
+            <div>
+              <label for="form-field-8">大图（800 * 800）</label>
+              <form method="post" enctype="multipart/form-data" class="text-center" v-show="optionType === 'add' || (optionType === 'upd' && image5_big_upload_show)">
+                <input type="file" name="file" class="demo-fileInput-4 image5-big" accept="image/jpeg,image/x-png" @change="onFileChange('.image5-big')">
+              </form>
+              <div v-show="optionType == 'upd' && !image5_big_upload_show">
+                <img :src="image5_big_url" alt="" class="img-responsive" style="margin: 0 auto; width: 200px">
+                <button type="button" class="btn btn-primary btn-block" @click="onEdit('.image5-big')" style="margin-top: 15px">编辑</button>
+              </div>
+              <div v-show="optionType === 'upd' && image5_big_upload_show">
+                <button type="button" class="btn btn-default btn-block" @click="onCancel('.image5-big')" style="margin-top: 15px">取消</button>
+              </div>
+            </div>
+            <hr />
+            <div>
+              <label for="form-field-9">常规图（350 * 350）</label>
+              <form method="post" enctype="multipart/form-data" class="text-center" v-show="optionType === 'add' || (optionType === 'upd' && image5_normal_upload_show)">
+                <input type="file" name="file" class="demo-fileInput-4 image5-normal" accept="image/jpeg,image/x-png" @change="onFileChange('.image5-normal')">
+              </form>
+              <div v-show="optionType == 'upd' && !image5_normal_upload_show">
+                <img :src="image5_normal_url" alt="" class="img-responsive" style="margin: 0 auto; width: 150px">
+                <button type="button" class="btn btn-primary btn-block" @click="onEdit('.image5-normal')" style="margin-top: 15px">编辑</button>
+              </div>
+              <div v-show="optionType === 'upd' && image5_normal_upload_show">
+                <button type="button" class="btn btn-default btn-block" @click="onCancel('.image5-normal')" style="margin-top: 15px">取消</button>
+              </div>
+            </div>
+
+            <hr />
+            <div>
+              <label for="form-field-11">缩略图（55 * 55）</label>
+              <form method="post" enctype="multipart/form-data" class="text-center" v-show="optionType === 'add' || (optionType === 'upd' && image5_thumbnail_upload_show)">
+                <input type="file" name="file" class="demo-fileInput-4 image5-thumbnail" accept="image/jpeg,image/x-png" @change="onFileChange('.image5-thumbnail')">
+              </form>
+              <div v-show="optionType == 'upd' && !image5_thumbnail_upload_show">
+                <img :src="image5_thumbnail_url" alt="" class="img-responsive" style="margin: 0 auto;">
+                <button type="button" class="btn btn-primary btn-block" @click="onEdit('.image5-thumbnail')" style="margin-top: 15px">编辑</button>
+              </div>
+              <div v-show="optionType === 'upd' && image5_thumbnail_upload_show">
+                <button type="button" class="btn btn-default btn-block" @click="onCancel('.image5-thumbnail')" style="margin-top: 15px">取消</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="widget-box">
+        <div class="widget-header">
+          <h4>商品详细图</h4>
+          <div class="widget-toolbar">
+            <a href="#" data-action="collapse">
+              <i class="icon-chevron-up"></i>
+            </a>
+          </div>
+        </div>
+        <div class="widget-body">
+          <div class="widget-main">
+            <div>
+              <label for="form-field-8">详细说明部分展示图(Width: 750px)</label>
+              <form method="post" enctype="multipart/form-data" class="text-center" v-show="optionType === 'add' || (optionType === 'upd' && image_detail_upload_show)">
+                <input type="file" name="file" id="demo-fileInput-muti" class="demo-fileInput-muti image-detail" accept="image/jpeg,image/x-png" @change="onFileChange('.image-detail')">
+              </form>
+              <div v-show="optionType == 'upd' && !image_detail_upload_show">
+                <img v-for="imageUrl in imageDetail_url" :src="imageUrl" alt="" class="img-responsive" style="margin: 15px auto; width: 400px">
+                <button type="button" class="btn btn-primary btn-block" @click="onEdit('.image-detail')" style="margin-top: 15px">编辑</button>
+              </div>
+              <div v-show="optionType === 'upd' && image_detail_upload_show">
+                <button type="button" class="btn btn-default btn-block" @click="onCancel('.image-detail')" style="margin-top: 15px">取消</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="space-12"></div>
+  <div class="row">
+    <div class="col-sm-12 text-center">
+      <button type="button" class="btn btn-pink"  id="btnUpload" data-loading-text="uploading..." autocomplete="off" :disabled="!enabledUpload" @click="onUpload()">上传商品图片</button>
+      <a href="/addItemSuccess" class="btn btn-default" v-if="optionType === 'upd'">跳过，下一步</a>
+    </div>
+  </div>
+  <div class="space-12"></div>
+</div>
+
+
+<script src="/javascripts/view/uploadItemImage.js"></script>

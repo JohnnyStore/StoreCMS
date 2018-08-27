@@ -1,0 +1,38 @@
+<div class="breadcrumbs" id="breadcrumbs">
+  <ul class="breadcrumb">
+    <li>
+      <i class="icon-home home-icon"></i>
+      <a href="/index">主页</a>
+    </li>
+    <li>
+      <a href="#">业务信息</a>
+    </li>
+    <li class="active">商品维护成功</li>
+  </ul>
+</div>
+
+<input type="hidden" value="{{optionType}}" id="hidden-optionType">
+<div class="page-content" id="app">
+  <div class="page-header">
+    <h1>
+      商品管理
+      <small>
+        <i class="icon-double-angle-right"></i>
+        商品维护成功
+      </small>
+    </h1>
+  </div>
+  <div class="space-30"></div>
+  <div class="text-center">
+    <h4 style="font-size: 30px">
+      <i class="icon-jfi-check-circle green" style="font-size: 55px; margin-top: 10px"></i>
+      <span id="msg">商品添加成功，3秒后跳转到商品列表页面。</span>
+    </h4>
+  </div>
+  <div class="space-20"></div>
+  <div class="text-center" style="margin: 0 auto; width: 800px;">
+    <a href="/item" class="btn btn-primary">直接跳转到商品列表页面</a>
+  </div>
+</div>
+
+<script src="/javascripts/view/addItemSuccess.js"></script>

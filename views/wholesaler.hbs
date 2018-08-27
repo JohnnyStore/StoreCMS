@@ -1,0 +1,169 @@
+<div class="breadcrumbs" id="breadcrumbs">
+    <ul class="breadcrumb">
+        <li>
+            <i class="icon-home home-icon"></i>
+            <a href="/index">主页</a>
+        </li>
+        <li>
+            <a href="#">业务信息</a>
+        </li>
+        <li class="active">批发商信息</li>
+    </ul>
+</div>
+
+<div class="page-content">
+    <div class="page-header">
+        <h1>
+            业务信息
+            <small>
+                <i class="icon-double-angle-right"></i>
+                批发商信息
+            </small>
+        </h1>
+    </div><!-- /.page-header -->
+
+    <div class="row" id="app">
+        <div class="col-xs-12">
+            <button type="button" class="btn btn-primary" @click="onShow()" data-toggle="modal">
+                <i class="icon-plus"></i>
+                查询
+            </button>
+            <div class="space-6"></div>
+            <div class="table-header">
+                找到{{totalCount}}条数据
+            </div>
+            <div class="table-responsive">
+                <table id="data-list" class="table table-striped table-bordered table-hover no-margin-bottom">
+                    <thead>
+                    <tr>
+                        <th class="center">批发商编号</th>
+                        <th>密码</th>
+                        <th>电话</th>
+                        <th>邮箱</th>
+                        <th>状态</th>
+                        <th class="hidden-480">添加</th>
+                        <th>
+                            <i class="icon-time bigger-110 hidden-480"></i>
+                            添加时间
+                        </th>
+                        <th class="hidden-480">更新</th>
+                        <th>
+                            <i class="icon-time bigger-110 hidden-480"></i>
+                            更新时间
+                        </th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{#each dataList}}
+                        <tr>
+                            <td class="center">{{this.holesalerID}}</td>
+                            <td>{{this.password}}</td>
+                            <td>{{this.cellphone}}</td>
+                            <td>{{this.email}}</td>
+                            <td>{{this.statusText}}</td>
+                            <td>{{this.inUser}}</td>
+                            <td>{{this.inDate}}</td>
+                            <td>{{this.lastEditUser}}</td>
+                            <td>{{this.lastEditDate}}</td>
+                            <td>
+                                <div class="">
+                                    {{#if this.frozen}}
+                                        <button class="btn btn-success btn-sm" @click="onActive({{this.customerID}}, {{this.cellphone}})">
+                                            激活
+                                        </button>
+                                    {{/if}}
+
+                                    {{#if this.active}}
+                                        <button class="btn btn-danger btn-sm" @click="onFrozen({{this.customerID}}, {{this.cellphone}})">
+                                            冻结
+                                        </button>
+                                    {{/if}}
+                                </div>
+                            </td>
+                        </tr>
+                    {{/each}}
+                    </tbody>
+                </table>
+            </div>
+
+            {{#if paginationArray}}
+                <div class="modal-footer no-margin-top">
+                    <ul class="pagination pull-right no-margin">
+                        <li class="prev">
+                            {{#if prePageNum}}
+                                <a href="/wholesaler?page={{prePageNum}}">
+                                    <i class="icon-double-angle-left"></i>
+                                </a>
+                            {{else}}
+                                <span>
+              <i class="icon-double-angle-left"></i>
+            </span>
+                            {{/if}}
+                        </li>
+                        {{#each paginationArray}}
+                            <li>
+                                <a href="/wholesaler?page={{this}}">{{this}}</a>
+                            </li>
+                        {{/each}}
+                        <li class="next">
+                            {{#if nextPageNum}}
+                                <a href="/wholesaler?page={{nextPageNum}}">
+                                    <i class="icon-double-angle-right"></i>
+                                </a>
+                            {{else}}
+                                <span>
+              <i class="icon-double-angle-right"></i>
+            </span>
+                            {{/if}}
+                        </li>
+                    </ul>
+                </div>
+            {{/if}}
+
+            <div class="modal fade" tabindex="-1" role="dialog" id="myModal">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">批发商查询</h4>
+                        </div>
+                        <div class="alert alert-danger store-alert hidden">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <span></span>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <label for="inputPassword3" class="col-sm-2 control-label">批发商电话</label>
+                                    <div class="col-sm-10 no-padding-right">
+                                        <input type="text" class="form-control" maxlength="25" v-model="cellphone"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputEmail3" class="col-sm-2 control-label">账户状态</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control" v-model="selectedStatus">
+                                            <option value=""> 全部</option>
+                                            <option value="P">待审核</option>
+                                            <option value="A">审核通过</option>
+                                            <option value="N">审核未通过</option>
+                                            <option value="F">冻结</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                            <button type="button" class="btn btn-primary" @click="onSearch()">查询</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<input type="hidden" value="{{currentPageNum}}" id="hidden-currentPageNum">
+<script src="/javascripts/view/wholesaler.js"></script>

@@ -1,0 +1,359 @@
+
+<div class="breadcrumbs" id="breadcrumbs">
+  <ul class="breadcrumb">
+    <li>
+      <i class="icon-home home-icon"></i>
+      <a href="/index">主页</a>
+    </li>
+    <li>
+      <a href="#">业务信息</a>
+    </li>
+    <li class="active">商品添加</li>
+  </ul>
+</div>
+<div class="page-content" id="app">
+  <div class="page-header">
+    <h1>
+      业务信息
+      <small>
+        <i class="icon-double-angle-right"></i>
+        商品信息添加
+      </small>
+    </h1>
+  </div>
+  <div class="page-body">
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label for="inputEmail3" class="col-sm-3 control-label">商品编号</label>
+          <div class="col-sm-9">
+            <input type="hidden" value="{{optionType}}" id="hidden-optionType">
+            <input type="hidden" value="{{itemID}}" id="hidden-itemID">
+            <p class="form-control-static">\{{itemID}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label for="inputEmail3" class="col-sm-3 control-label">商品编码</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" maxlength="15" autofocus id="form-field-itemCode" v-model="itemCode" @blur="onItemCodeBlur()">
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label for="inputEmail3" class="col-sm-3 control-label">商品状态</label>
+          <div class="col-sm-9">
+            <select class="form-control" v-model="selectedItemStatus">
+              <option value="" selected>请选择商品状态</option>
+              <option v-for="itemStatus in itemStatusList" :value="itemStatus.code">
+                \{{itemStatus.text}}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label for="inputEmail3" class="col-sm-3 control-label">品牌</label>
+          <div class="col-sm-9">
+            <select class="form-control" v-model="selectedBrand" @change="onBrandChange()">
+              <option value="0" selected>请选择所属品牌</option>
+              {{#each brandList}}
+                <option value="{{this.brandID}}">{{this.brandCN}}</option>
+              {{/each}}
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label for="inputEmail3" class="col-sm-3 control-label">一级分类</label>
+          <div class="col-sm-9">
+            <select class="form-control" v-model="selectedCategory" @change="onCategoryChange()">
+              <option value="0" selected>请选择一级分类</option>
+              {{#each categoryList}}
+                <option value="{{this.categoryID}}">{{this.categoryCN}}</option>
+              {{/each}}
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label for="inputEmail3" class="col-sm-3 control-label">二级分类</label>
+          <div class="col-sm-9">
+            <select class="form-control" v-model="selectedSubCategory" @change="onSubCategoryChange()">
+              <option value="0" selected>请选择二级分类</option>
+              {{#each subCategoryList}}
+                <option value="{{this.subCategoryID}}">{{this.subCategoryCN}}</option>
+              {{/each}}
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label for="inputEmail3" class="col-sm-3 control-label">商品组</label>
+          <div class="col-sm-9">
+            <select class="form-control" v-model="selectedItemGroup">
+              <option value="0" selected>请选择商品组</option>
+                <option v-for="itemGroup in itemGroupList" :value="itemGroup.itemGroupID">\{{itemGroup.itemGroupCN}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label class="col-sm-3 control-label">商品系列</label>
+          <div class="col-sm-9">
+            <select class="form-control" v-model="selectedSeries" @change="onSeriesChange()">
+              <option value="0" selected>请选择商品系列</option>
+              {{#each seriesList}}
+                <option value="{{this.seriesID}}">{{this.itemSeriesCN}}</option>
+              {{/each}}
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label class="col-sm-3 control-label">商品产地</label>
+          <div class="col-sm-9">
+            <select class="form-control" v-model="selectedMadeIn">
+              <option value="0" selected>请选择商品产地</option>
+              {{#each madeCountryList}}
+                <option value="{{this.countryID}}">{{this.countryNameCN}}</option>
+              {{/each}}
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label for="inputEmail3" class="col-sm-3 control-label">商品颜色</label>
+          <div class="col-sm-9">
+            <select class="form-control" v-model="selectedColor">
+              <option value="0" selected>请选择商品颜色</option>
+              {{#each colorList}}
+                <option value="{{this.colorID}}">{{this.colorCN}}</option>
+              {{/each}}
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label for="inputEmail3" class="col-sm-3 control-label">商品尺寸</label>
+          <div class="col-sm-9">
+            <select class="form-control" v-model="selectedSize">
+              <option value="0" selected>请选择商品尺寸</option>
+              {{#each sizeList}}
+                <option value="{{this.sizeID}}">{{this.sizeCN}}</option>
+              {{/each}}
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label class="col-sm-3 control-label">商品材质</label>
+          <div class="col-sm-7 no-padding-right">
+            <input type="text" class="form-control" v-model="displayMaterialName" readonly>
+          </div>
+          <div class="col-sm-2 no-padding-right">
+            <button type="button" class="btn btn-success btn-sm" style="" @click="onShowMaterial()">选择材质</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label for="inputEmail3" class="col-sm-3 control-label">商品批发汇率</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control text-number" maxlength="10" id="form-field-rate" v-model="rate" @blur="onRateBlur()" placeholder="只能填写小数，0.95表示95折">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label class="col-sm-3 control-label">商品单价（RMB）</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control text-number" maxlength="10" id="form-field-unitPrice4RMB" v-model="unitPrice4RMB" @blur="onUnitPrice4RMBBlur()" placeholder="小数部分最多两位，如99.99">
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label class="col-sm-3 control-label">商品单价（USD）</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control text-number" maxlength="10" id="form-field-unitPrice4USD" v-model="unitPrice4USD" @blur="onUnitPrice4USDBlur()" placeholder="小数部分最多两位，如99.99">
+          </div>
+        </div>
+      </div>
+      <!--<div class="col-sm-6">-->
+        <!--<div class="form-group">-->
+          <!--<label for="inputEmail3" class="col-sm-3 control-label">商品促销价（RMB）</label>-->
+          <!--<div class="col-sm-9">-->
+            <!--<input type="text" class="form-control text-number" maxlength="10" id="form-field-promotionPrice4RMB" v-model="promotionPrice4RMB" @blur="onPromotionPrice4RMBBlur()" placeholder="小数部分最多两位，如99.99">-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+    </div>
+    <!--<div class="row">-->
+      <!--<div class="col-sm-6">-->
+        <!--<div class="form-group">-->
+          <!--<label class="col-sm-3 control-label">商品单价（USD）</label>-->
+          <!--<div class="col-sm-9">-->
+            <!--<input type="text" class="form-control text-number" maxlength="10" id="form-field-unitPrice4USD" v-model="unitPrice4USD" @blur="onUnitPrice4USDBlur()" placeholder="小数部分最多两位，如99.99">-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+      <!--<div class="col-sm-6">-->
+        <!--<div class="form-group">-->
+          <!--<label for="inputEmail3" class="col-sm-3 control-label">商品促销价（USD）</label>-->
+          <!--<div class="col-sm-9">-->
+            <!--<input type="text" class="form-control text-number" maxlength="10" id="form-field-promotionPrice4USD" v-model="promotionPrice4USD" @blur="onPromotionPrice4USDBlur()" placeholder="小数部分最多两位，如99.99">-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label class="col-sm-3 control-label">商品长宽高</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" maxlength="20" v-model="itemLength">
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label class="col-sm-3 control-label">商品可调尺寸</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" maxlength="20" v-model="adjustLength">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label class="col-sm-3 control-label">适用对象（中文）</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" maxlength="20" v-model="suitablePetCN">
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label class="col-sm-3 control-label">适用对象（英文）</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" maxlength="20" v-model="suitablePetEN">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label class="col-sm-3 control-label">简要描述（中文）</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" maxlength="30" v-model="itemShortDescriptionCN" >
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label class="col-sm-3 control-label">简要描述（英文）</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" maxlength="100" v-model="itemShortDescriptionEN">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label class="col-sm-3 control-label">详细描述（中文）</label>
+          <div class="col-sm-9">
+            <textarea class="form-control" maxlength="200" v-model="itemDescriptionCN" rows="8"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label class="col-sm-3 control-label">详细描述（英文）</label>
+          <div class="col-sm-9">
+            <textarea class="form-control" maxlength="1000" v-model="itemDescriptionEN" rows="8"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12 text-center" style="margin: 15px">
+        <a href="/item" class="btn btn-default">返回</a>
+        <button type="button" class="btn btn-primary" :disabled="!enabledSave" @click="onSave">保存并下一步</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" tabindex="-1" role="dialog" id="myModal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">选择商品材质</h4>
+        </div>
+        <div class="alert alert-danger store-alert hidden">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <span></span>
+        </div>
+        <div class="modal-body">
+          <table class="table table-condensed table-hover" id="material-list">
+            <tbody>
+            {{#each materialList}}
+              <tr>
+                <td style="width: 80px">
+                  <div class="checkbox">
+                    <label>
+                      <input name="form-field-material" type="checkbox" value="{{this.materialID}}" data-text="{{this.materialCN}}" class="ace">
+                      <span class="lbl"></span>
+                    </label>
+                  </div>
+                </td>
+                <td>
+                  {{this.materialCN}}
+                </td>
+              </tr>
+            {{/each}}
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+          <button type="button" class="btn btn-primary" @click="onSelected()">确定</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<script src="/javascripts/view/addItem.js"></script>

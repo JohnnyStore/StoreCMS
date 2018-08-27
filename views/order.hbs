@@ -1,0 +1,407 @@
+
+<div class="breadcrumbs" id="breadcrumbs">
+  <ul class="breadcrumb">
+    <li>
+      <i class="icon-home home-icon"></i>
+      <a href="/index">主页</a>
+    </li>
+    <li>
+      <a href="#">业务信息</a>
+    </li>
+    <li class="active">订单管理</li>
+  </ul>
+</div>
+
+<div class="page-content">
+  <div class="page-header">
+    <h1>
+      业务信息
+      <small>
+        <i class="icon-double-angle-right"></i>
+        业务信息
+      </small>
+    </h1>
+  </div><!-- /.page-header -->
+
+  <div class="row" id="app">
+    <div class="col-xs-12">
+      <button type="button" class="btn btn-primary" @click="onShowSearchDialog()" data-toggle="modal">
+        <i class="icon-search"></i>
+        查询
+      </button>
+      <div class="space-6"></div>
+      <div class="table-header">
+        找到{{totalCount}}条数据
+      </div>
+      <div class="table-responsive">
+        <table id="city-list" class="table table-striped table-bordered table-hover no-margin-bottom">
+          <thead>
+          <tr>
+            <th class="center">
+              订单编号
+            </th>
+            <th>下单客户</th>
+            <th>下单时间</th>
+            <th>订单金额</th>
+            <th>配送地址</th>
+            <th>订单备注</th>
+            <th>快递公司</th>
+            <th>运单号</th>
+            <th>订单状态</th>
+            <th>退款原因</th>
+            <th>操作</th>
+          </tr>
+          </thead>
+          <tbody>
+          {{#each dataList}}
+            <tr>
+              <td class="center">{{this.orderID}}</td>
+              <td>{{this.customerVO.cellphone}}</td>
+              <td>{{this.orderDate}}</td>
+              <td>{{this.orderAmount}}</td>
+              <td>{{this.shippingAddressVO.countryVO.countryNameCN}}{{this.shippingAddressVO.provinceVO.provinceNameCN}}{{this.shippingAddressVO.cityVO.cityNameCN}}{{this.shippingAddressVO.shippingStreet}}</td>
+              <td>{{this.memo}}</td>
+              <td>{{this.expressCompanyVO.companyCN}}</td>
+              <td>{{this.trackingNumber}}</td>
+              <td>{{this.orderStatusText}}</td>
+              <td>{{this.refundReason}}</td>
+              <td>
+                <div class="visible-md visible-lg hidden-sm hidden-xs action-buttons">
+                  <button class="btn btn-primary btn-sm" @click="onShowChangeStatus({{this.orderID}}, '{{this.orderStatus}}')">
+                    状态更新
+                  </button>
+                  <button class="btn btn-success btn-sm" @click="onShowOrderDetail({{this.orderID}})">
+                    订单明细
+                  </button>
+                </div>
+              </td>
+            </tr>
+          {{/each}}
+          </tbody>
+        </table>
+      </div>
+
+      {{#if paginationArray}}
+        <div class="modal-footer no-margin-top">
+          <ul class="pagination pull-right no-margin">
+            <li class="prev">
+              {{#if prePageNum}}
+                <a href="/order?page={{prePageNum}}">
+                  <i class="icon-double-angle-left"></i>
+                </a>
+              {{else}}
+                <span>
+              <i class="icon-double-angle-left"></i>
+            </span>
+              {{/if}}
+            </li>
+            {{#each paginationArray}}
+              <li>
+                <a href="/order?page={{this}}">{{this}}</a>
+              </li>
+            {{/each}}
+            <li class="next">
+              {{#if nextPageNum}}
+                <a href="/order?page={{nextPageNum}}">
+                  <i class="icon-double-angle-right"></i>
+                </a>
+              {{else}}
+                <span>
+              <i class="icon-double-angle-right"></i>
+            </span>
+              {{/if}}
+            </li>
+          </ul>
+        </div>
+      {{/if}}
+
+      <div class="modal fade" tabindex="-1" role="dialog" id="search-dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">订单信息查询</h4>
+            </div>
+            <div class="alert alert-danger store-alert hidden">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <span></span>
+            </div>
+            <div class="modal-body">
+              <form class="form-horizontal">
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">下单电话</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" maxlength="11" v-model="cellphone">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">近期订单</label>
+                  <div class="col-sm-10">
+                    <select class="form-control" v-model="recentMonth">
+                      <option value="3">近三个月订单</option>
+                      <option value="6">近半年订单</option>
+                      <option value="12">近一年订单</option>
+                      <option value="-1">全部订单</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputPassword3" class="col-sm-2 control-label">订单状态</label>
+                  <div class="col-sm-10">
+                    <select class="form-control" v-model="orderStatus">
+                      <option value="N">全部</option>
+                      <option value="O">待支付订单</option>
+                      <option value="P">已支付订单</option>
+                      <option value="C">被取消订单</option>
+                      <option value="E">已过期订单</option>
+                      <option value="S">配送中订单</option>
+                      <option value="R">退款订单</option>
+                      <option value="F">已完成订单</option>
+                    </select>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+              <button type="button" class="btn btn-primary" @click="onSearch()">查询</button>
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div>
+
+      <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" id="detail-dialog">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">订单详细信息</h4>
+            </div>
+            <div class="alert alert-danger store-alert hidden">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <span></span>
+            </div>
+            <div class="modal-body">
+              <form class="form-horizontal">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="col-sm-3 control-label">订单编号</label>
+                      <div class="col-sm-7">
+                        <p class="form-control-static">\{{detail_orderID}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="col-sm-3 control-label">订单日期</label>
+                      <div class="col-sm-7">
+                        <p class="form-control-static">\{{detail_orderDate}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="col-sm-3 control-label">客户电话</label>
+                      <div class="col-sm-7">
+                        <p class="form-control-static">\{{detail_cellphone}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="col-sm-3 control-label">订单金额</label>
+                      <div class="col-sm-7">
+                        <p class="form-control-static">\{{detail_orderAmount}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="col-sm-3 control-label">配送地址</label>
+                      <div class="col-sm-7">
+                        <p class="form-control-static">\{{detail_orderShippingAddress}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="col-sm-3 control-label">订单状态</label>
+                      <div class="col-sm-7">
+                        <p class="form-control-static">\{{detail_orderStatus}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="col-sm-3 control-label">配送公司</label>
+                      <div class="col-sm-7">
+                        <p class="form-control-static">\{{detail_expressCompany}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="col-sm-3 control-label">运单号</label>
+                      <div class="col-sm-7">
+                        <p class="form-control-static">\{{detail_trackingNumber}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="col-sm-3 control-label">退款原因</label>
+                      <div class="col-sm-7">
+                        <p class="form-control-static">\{{detail_refundReason}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="col-sm-3 control-label">订单备注</label>
+                      <div class="col-sm-7">
+                        <p class="form-control-static">\{{detail_memo}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="space-10"></div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th></th>
+                          <th>商品</th>
+                          <th>数量</th>
+                          <th>金额</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="item in order_itemList">
+                          <td>
+                            <img :src="item.itemVO.itemImageUrl" class="img-responsive">
+                          </td>
+                          <td>
+                            \{{item.itemVO.itemShortDescriptionCN}}
+                          </td>
+                          <td>\{{item.itemCount}}</td>
+                          <td>\{{item.itemAmount}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" tabindex="-1" role="dialog" id="change-dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">订单状态更新</h4>
+            </div>
+            <div class="alert alert-danger store-alert hidden">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <span></span>
+            </div>
+            <div class="modal-body">
+              <form class="form-horizontal">
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">订单编号</label>
+                  <div class="col-sm-10">
+                    <p class="form-control-static">\{{change_orderID}}</p>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-sm-12">
+                    <div class="alert alert-warning alert-dismissible hidden" role="alert" id="change-dialog-message">
+                      <strong>提示!</strong>
+                      <span>\{{change_message}}</span>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" :disabled="!change_allowShip" @click="onShip()">配送</button>
+              <button type="button" class="btn btn-primary" :disabled="!change_allowRefund"@click="onRefund()">退款</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" tabindex="-1" role="dialog" id="tracking-dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">订单配送</h4>
+            </div>
+            <div class="alert alert-danger store-alert hidden">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <span></span>
+            </div>
+            <div class="modal-body">
+              <form class="form-horizontal">
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">订单编号</label>
+                  <div class="col-sm-10">
+                    <p class="form-control-static">\{{tracking_orderID}}</p>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">物流公司</label>
+                  <div class="col-sm-10">
+                    <select class="form-control" v-model="selectedExpressCompany">
+                      <option value="0">请选择物流公司</option>
+                      <option v-for="expressCompany in expressCompanyList" :value="expressCompany.companyID">\{{expressCompany.companyCN}}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">运单号</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" maxlength="50" v-model="tracking_number">
+                  </div>
+                </div>
+                <!--<div class="form-group">-->
+                  <!--<div class="col-sm-12">-->
+                    <!--<div class="alert alert-warning alert-dismissible hidden" role="alert" id="change-dialog-message">-->
+                      <!--<strong>提示!</strong>-->
+                      <!--<span>\{{tracking_message}}</span>-->
+                    <!--</div>-->
+                  <!--</div>-->
+                <!--</div>-->
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" :disabled="!tracking_submit" @click="onSaveTracking()">提交</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<input type="hidden" value="{{currentPageNum}}" id="hidden-currentPageNum">
+<script src="/javascripts/view/order.js"></script>
