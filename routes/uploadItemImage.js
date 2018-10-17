@@ -1,12 +1,26 @@
 var express = require('express');
+var path = require('path');
+var fs = require('fs');
 var multer = require('multer');
 var commonService = require('../service/commonService');
 var router = express.Router();
 
+var createFolder = function(folder){
+  try{
+    fs.accessSync(folder);
+  }catch(e){
+    fs.mkdirSync(folder);
+  }
+};
+
+var uploadPath = path.join(path.resolve(__dirname, '..'), 'public', 'images', 'item');
+
+createFolder(uploadPath);
+
 var storage = multer.diskStorage({
   destination: function (req, file, cb){
     //文件上传成功后会放入public下的upload文件夹
-    cb(null, './public/images/item')
+    cb(null, uploadPath);
   },
   filename: function (req, file, cb){
     //设置文件的名字为其原本的名字，也可以添加其他字符，来区别相同文件，例如file.originalname+new Date().getTime();利用时间来区分
