@@ -435,9 +435,9 @@ var app = new Vue({
             propAlert(res.msg);
           }else{
             if(app.$data.optionType === 'add'){
-              location.href = '/uploadItemImage?optionType=' + app.$data.optionType + '&itemID=' + res.data.responseData;
+              location.href = '/uploadItemImage?optionType=' + app.$data.optionType + '&itemID=' + res.data.responseData + '&itemCode=' + app.$data.itemCode;
             }else{
-              location.href = '/uploadItemImage?optionType=' + app.$data.optionType + '&itemID=' + app.$data.itemID;
+              location.href = '/uploadItemImage?optionType=' + app.$data.optionType + '&itemID=' + app.$data.itemID + '&itemCode=' + app.$data.itemCode;
             }
 
           }

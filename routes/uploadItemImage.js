@@ -35,7 +35,8 @@ var upload = multer({
 router.get('/', function(req, res, next) {
   var optionType = req.query.optionType;
   var itemID = req.query.itemID;
-  res.render('uploadItemImage', { title: '添加商品图片', optionType: optionType, itemID: itemID });
+  var itemCode = req.query.itemCode;
+  res.render('uploadItemImage', { title: '添加商品图片', optionType: optionType, itemID: itemID, itemCode: itemCode });
 });
 
 router.get('/image', function (req, res, next) {
